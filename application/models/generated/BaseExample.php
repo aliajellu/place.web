@@ -18,6 +18,8 @@ Doctrine_Manager::getInstance()->bindComponent('Example', 'main');
  * @property string $media_path
  * @property string $media_type
  * @property integer $type
+ * @property integer $is_published
+ * @property integer $is_public
  * @property Run $Run
  * @property User $User
  * @property Doctrine_Collection $ExampleConcept
@@ -126,6 +128,26 @@ abstract class BaseExample extends Doctrine_Record
              'notnull' => false,
              'autoincrement' => false,
              ));
+        $this->hasColumn('is_published', 'integer', 1, array(
+             'type' => 'integer',
+             'length' => 1,
+             'fixed' => false,
+             'unsigned' => false,
+             'primary' => false,
+             'default' => '0',
+             'notnull' => true,
+             'autoincrement' => false,
+             ));
+        $this->hasColumn('is_public', 'integer', 1, array(
+             'type' => 'integer',
+             'length' => 1,
+             'fixed' => false,
+             'unsigned' => false,
+             'primary' => false,
+             'default' => '0',
+             'notnull' => true,
+             'autoincrement' => false,
+             ));
     }
 
     public function setUp()
@@ -142,7 +164,7 @@ abstract class BaseExample extends Doctrine_Record
         $this->hasMany('ExampleConcept', array(
              'local' => 'id',
              'foreign' => 'example_id'));
-
+        
 		$this->hasMany('Assessment', array(
              'local' => 'id',
              'foreign' => 'obj_id'));

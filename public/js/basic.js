@@ -1,10 +1,62 @@
+function toggleChecked(status) {
+	$(".tag-checkbox").each( function() {
+		$(this).attr("checked",status);
+	})
+}
+
+function toggleChecked(status) {
+	$(".tag-checkbox").each( function() {
+		$(this).attr("checked",status);
+	})
+}
+
+function closeConceptList()
+{
+	//$('#concept-select-list').hide(1000);
+	$("#concept-select-list").addClass('div-hide');
+	$('#concept-select-link').html('<a href="#" onClick="showConceptList()"><img width="13px" height="13px" src="/images/icon_list_arrow_rigth.png"/></a>');
+
+}
+
+function showConceptList()
+{
+	//$('#concept-select-list').show(700);
+	$("#concept-select-list").removeClass('div-hide');
+	$('#concept-select-link').html('<a href="#" onClick="closeConceptList()"><img width="13px" height="13px" src="/images/icon_list_arrow_down.png"/></a>');
+	
+}
+
 function loadWeb()
 {
+	/*
 	$('#web-container-home').show(700);
 	$("#web-container-mask").removeClass('div-hide');
 	//$("#web-container-mask").html("<img src='/images/loader.gif' alt='Loading Icon' />");
 	$('#webiframe').attr("src","/web");
 	$("#web-container-home").removeClass('div-hide');
+	*/
+	if(popupweb !== undefined && !popupweb.closed)
+	{
+		popupweb.focus();
+	} else {
+		var popupweb = window.open('/web','WebPopUp','width=1100,height=800');
+	}
+	return false;
+}
+
+function webLinkToContent(url) 
+{
+	window.blur();
+	window.opener.focus();
+	window.opener.location.href = url;
+    //window.opener.focus();
+	//window.opener.document.focus() ;
+	//window.opener.focusAndGo(url);
+}
+
+function focusAndGo(url) {
+	   window.focus();
+	   window.location.href=url;
 }
 
 function closeWeb()
@@ -130,29 +182,30 @@ function postVote(vote, id, type, userid, prefix)
 //	$("#"+prefix+"obj_type").val(type); 
 	$("#"+prefix+"activity_on_user").val(userid);
 	$("#"+prefix+"i2").val(id);
-	//$("#"+prefix+"-form").submit();
+//	$("#"+prefix+"vote_form").submit();
 
+	///*
 	var jqxhr = $.post($("#"+prefix+"vote_form").attr('action'), $("#"+prefix+"vote_form").serialize())
 	    .success(function(data) { 
 			// test this
 			//$("#test-data").html(data);
 		 	//alert(data);
 		 	if(data==1)
-		 		{
-		 			alert("You have already voted");
-		 		} else if (data == "invalid"){
-		 			alert("Invalid parameters")
-		 		} else {
-		 			var obj = jQuery.parseJSON(data);
+		 	{
+		 		alert("You are not allowed to vote UP");
+	 		} else if (data==-1) {
+	 			alert("You are not allowed to vote DOWN");
+	 		} else {
+	 			var obj = jQuery.parseJSON(data);
 
-		 			// update voting  
-		 			  $("#"+prefix+"vote-minus-"+obj.voteOnId).html(obj.votesMinus);
-		 			  $("#"+prefix+"vote-total-"+obj.voteOnId).html(obj.votesSumm);
-		 			  $("#"+prefix+"vote-plus-"+obj.voteOnId).html(obj.votesPlus);
+	 			// update voting  
+	 			  $("#"+prefix+"vote-minus-"+obj.voteOnId).html(obj.votesMinus);
+	 			  $("#"+prefix+"vote-total-"+obj.voteOnId).html(obj.votesSumm);
+	 			  $("#"+prefix+"vote-plus-"+obj.voteOnId).html(obj.votesPlus);
 		 		}})
 	    //.error(function() { alert("error"); })
 	    //.complete(function() { alert("complete");});
-
+	 //*/
 }
 
 function addTag(id)
@@ -246,4 +299,39 @@ function cancelPreferences() {
 
 function logout() {
 	location="/user/logout";
+}
+
+function loadContentImage(imageUrl)
+{
+	var html = '<img src="'+imageUrl+'" width="200px">';
+	return html;
+}
+
+function loadVideolayer()
+{ 	
+	var player = '	<div id="jp_container_1" class="jp-video jp-video-thumb">	<div class="jp-type-single">	        <div id="jquery_jplayer_1" class="jp-jplayer"></div>	        <div class="jp-gui">	                <div class="jp-interface">	                        <div class="jp-progress">	                                <div class="jp-seek-bar">	                                        <div class="jp-play-bar"></div>	                                </div>	                        </div>	                        <div class="jp-current-time"></div>	                        <div class="jp-duration"></div>	                        <div class="jp-controls-holder jp-controls-holder-thumb">	                                <ul class="jp-controls jp-controls-thumb">	                                        <li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>	                                        <li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>	                                        <li><a href="javascript:;" class="jp-stop" tabindex="1">stop</a></li>	                                </ul>	                                <ul class="jp-toggles jp-toggles-thumb">	                                        <li><a href="javascript:;" class="jp-full-screen" tabindex="1" title="full screen">full screen</a></li>	                                        <li><a href="javascript:;" class="jp-restore-screen" tabindex="1" title="restore screen">restore screen</a></li>	                                </ul>	                        </div>	                </div>	        </div>	</div>	</div>';
+          
+	return player;
+}
+
+function loadVideoFile(mediaUrl)
+{
+	$("#jquery_jplayer_1").jPlayer({
+        ready: function() { // The $.jPlayer.event.ready event
+           $(this).jPlayer("setMedia", { m4v: mediaUrl }); //.jPlayer("play");
+        },
+        ended: function() { // The $.jPlayer.event.ended event
+            //$(this).jPlayer("play"); // Repeat the media
+        },
+        size: {
+                            width: "200px",
+                            height: "150px",
+                            cssClass: "jp-video-thumb"
+                    },
+
+     solution:"html, flash",
+     swfPath: "/jquery/jplayer",
+     supplied: "m4v",
+     errorAlerts: true
+    });
 }

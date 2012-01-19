@@ -104,7 +104,7 @@ class MyhomeController extends Zend_Controller_Action
 		if ($comment != ''){
 			$assessmentReview = new AssessmentReviews();
 			$assessmentReview->run_id = $_SESSION['run_id'];
-			$assessmentReview->author_id = $_SESSION['author_id'];
+			$assessmentReview->author_id = $_SESSION['author_id'];			
 			$assessmentReview->log = $comment;
 			$assessmentReview->mark_for_discussion = $markForDiscussion;
 			$assessmentReview->date_created = date('Y-m-d H:i:s');
@@ -120,7 +120,7 @@ class MyhomeController extends Zend_Controller_Action
 				$activity->i1 = $assessmentReview->id;
 				$activity->s1 = 'AssessmentReview';
 				$activity->save();
-			}
+			}	
 		}
 				
 		$this->_forward('curriculum-journal');

@@ -1,3 +1,39 @@
+.date {
+    color: #414B53;
+    float: right;
+    font-size: small;
+}
+
+.msg-reanswer{
+	padding: 0.5em;
+	border: 1px dashed #000000;
+	width: 64%;
+	margin-bottom: 1em;
+}
+
+#fileupload{
+	margin-bottom: 1em;
+}
+
+#concept-select-list{
+    margin-left: 690px;
+    margin-top: 27px;
+    position: fixed;
+    z-index: 90;
+}
+
+#web-controls {
+    margin-top: 5px;
+}
+
+#web-controls div{
+    /*float: left;*/
+}
+
+#web-controls .control{
+	float:left;
+}
+
 #webiframe{
 	border: 0;
 }
@@ -78,18 +114,24 @@
 }
 
 #my-recent-activity-feed{
-    max-height: 214px;
+    max-height: 209px;
     overflow: auto;
 }
 
-#recent-class-activity{
+#recent-class-activity{ 
+	/* rokham 
 	min-height: 100px;
-    max-height: 250px;
+    max-height: 250px;  
+ 	*/
+	height: 400px;
 }
 
 #recent-class-activity-feed{
-    max-height: 214px;
-    overflow: auto;
+    /* rokham
+	max-height: 214px;
+    */
+	max-height: 340px;
+	overflow: auto;
 }
 
 #recent-class-activity .scrollable {
@@ -109,8 +151,8 @@
 }
 
 #assessment-review-container{
+	float: left;
     margin-top: 3em;
-    width: 600px;
 }
 
 .div-show {
@@ -404,7 +446,7 @@ display:none;
 
 
 #posts-list {
-    max-height: 450px;
+    /*max-height: 450px;*/
     overflow: auto;
     text-align: left;
     margin-bottom: 10px;
@@ -432,8 +474,9 @@ display:none;
 }
 
 #reply-container {
+	float: left;
     margin-top: 1em;
-    width: 600px;
+
 }
 
 
@@ -509,15 +552,14 @@ li.header-li a{
     border: 1px solid #000000;
     border-radius: 6px 6px 6px 6px;
     box-shadow: 1px 1px 3px;
-
     color: #333333;
     /*font-family: Tahoma, Geneva, sans-serif;*/
     margin-right: 1em;
-
     margin-bottom: 1em;
     margin-right: 1em;
     overflow: hidden;
     padding: 0.5em;
+    text-align: center;
 }
 
 .dashlet-box-image .image-holder {
@@ -562,18 +604,38 @@ li.header-li a{
     text-align: left;
 	margin-bottom: 10px;
 }
+    
+div#course-actions-teacher {
+	width: 425px;
+	height: 70px;
+	padding: 10px;              
+	margin-left: auto;
+	margin-right: auto;    
+	margin-bottom: 25px;
+	background-color: #306174;
+}  
+
+div#course-actions-student {
+	width: 175px;
+	height: 70px;
+	padding: 10px;              
+	margin-left: auto;
+	margin-right: auto;    
+	margin-bottom: 25px;
+	background-color: #306174;
+}
 
 /* overwriting look of some dashlet's that behave like buttons*/
 #course-actions div{
-    color: #FFFFFF;
-    text-align: center;
-    padding-left: 40px;
-    padding-right: 40px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    background-color: #dd9e37;
-	width: 200px;
-	margin-left: 60px;
+   /* color: #FFFFFF;
+       text-align: center;
+       padding-left: 40px;
+       padding-right: 40px;
+       padding-top: 10px;
+       padding-bottom: 10px;
+       background-color: #dd9e37;
+   	width: 200px;
+   	margin-left: 60px;    */
 }
 
 #course-actions div a:link, #course-actions div a:visited {
@@ -706,7 +768,6 @@ body {
     position: fixed;
     width: 100%;*/
     z-index: 5;
-    text-a
 }
 
 #header div{
@@ -741,7 +802,7 @@ body {
     margin-left: auto;
     margin-right: auto;
     /*width: 98%;*/
-    padding: 2em;
+    padding: 0 2em 2em 2em;
 /*  padding-bottom: 1.5em;*/
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
@@ -769,6 +830,9 @@ div.jp-video-270p {
     width: 30%;
 }
 
+#elo-tags1{
+}
+
 .comment-score{
 	font-size: 1.3em;
 	padding: 0.4em;
@@ -779,7 +843,7 @@ div.jp-video-270p {
 #orig-reply-container
 {
 	margin-top:1em;
-	width:600px;
+	float:left;
 }
 
 .answer-mc{
@@ -804,10 +868,72 @@ div.jp-video-270p {
 	padding: 5px;
 }
 
+#answers-graph{
+	float: none;
+	min-height: 100px;
+	padding-bottom: 0.5em;
+	text-align: center;
+}
+
+#answers-graph .graph-bar{
+	background: none repeat scroll 0 0 #DD9E37;
+    border: 1px solid #000000;
+    width: 43px;
+}
+
+#answers-graph .graph-item{
+	float: left;
+	margin-left: 0.8em;
+}
+
+#question-right-column{
+    float: right;
+    margin-left: 20px;
+    width: 30%;
+}
+
+#time-slider {
+	font-size: 1em;
+	margin-top: 6px;
+	width: 70%;
+}
+
+#time-slider fieldset { 
+	border:0; 
+	margin: 0em; 
+	height: 58px;
+	padding: 0;
+}	
+#time-slider label {
+	font-weight: normal; 
+	float: left; 
+	margin-right: .5em; 
+}
+
+#time-slider select {
+/*	margin-right: 1em; */
+	float: left;
+	display:none;
+}
+
+#time-slider .ui-slider {
+	clear: both; 
+	top: 10px;
+	margin-left:40px;
+}
+
+.ui-slider li span.ui-slider-label-show, .ui-slider dd span.ui-slider-label-show{
+	font-size: 0.7em;
+}
+
+.ui-slider dt{
+	font-size: 0.7em;
+}
+
 #assessment-notes-container {
-	width: 60%;
-	border: 1px solid black;
-	background-color: #DD9E37;
-	padding: 10px;
-	margin: 10px 0;
+    background-color: #DD9E37;
+    border: 1px solid black;
+    margin: 10px 0;
+    padding: 10px;
+    width: 63%;
 }

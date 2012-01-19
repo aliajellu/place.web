@@ -33,7 +33,9 @@ class ExampleController extends Zend_Controller_Action
 			->where('e.run_id = ? AND e.id = ?' , array($_SESSION['run_id'], $params['id']))
 			->orderBy('e.id DESC');
 			$example = $q->fetchArray();
+			
 			//print_r($example);
+			
 			if(!isset($example[0]['id']))
 			{
 				$type=-1; // the example does not exist
@@ -41,17 +43,18 @@ class ExampleController extends Zend_Controller_Action
 				
 				$type=1; // single view
 			}
-			
+
 			$aReviews = Doctrine::getTable('AssessmentReviews')->findByDql("run_id = ? and author_id = ? and t1 = 'examples' and i1 = ?",
-												array($_SESSION['run_id'], $_SESSION['author_id'], $params['id']));
+			array($_SESSION['run_id'], $_SESSION['author_id'], $params['id']));
 			if (count($aReviews) > 0){
 				$aReview = $aReviews[0];
 				$this->view->assessmentReview = $aReview->log;
-			}
+			}    	
+
     	} else {
     		// select all examples [list]
 			$k = Doctrine_Query::create()
-			->select('e.id, e.name')
+			->select('e.id, e.name, e.is_published')
 			->from('Example e')
 			->where('e.run_id = ?' , $_SESSION['run_id'])
 			->orderBy('e.id DESC');
@@ -101,9 +104,9 @@ class ExampleController extends Zend_Controller_Action
         $params = $this->getRequest()->getParams();
 
         // set a defaut name if not set
-        if(isset($params['name']) && $params['name']!="")
+        if(isset($params['example-name']) && $params['example-name']!="")
         {
-        	$name = $params['name'];
+        	$name = $params['example-name'];
         } else {
         	$name = "[ ... ]";
         }
@@ -119,7 +122,9 @@ class ExampleController extends Zend_Controller_Action
 		$example->media_path = $params['media_path'];
 		$example->media_type = $params['media_type'];
 		$example->type = $params['type'];
-        $example->save();
+		$example->is_published = $params['is_published'];
+//		$example->is_public = $params['is_public'];
+	    $example->save();
         
         $this->view->newExample = $example;
 
@@ -140,9 +145,25 @@ class ExampleController extends Zend_Controller_Action
         $comment->parent_id = null;
         $comment->save();
 
-        // associate example with concepts
-        
-	    //get all Concepts in db for comparison: which ones are not added yet
+        // associate example with concepts/tags
+    	 $this->addTagsToExample($example->id);
+
+		// redirect to home
+		header('Location: /example/show?id='.$example->id);
+
+    } // end fnc
+    
+    
+    /**
+     * 
+     * Adds a relationship for each selected tag/concept  
+     * @param int $exampleId The id of the entity (e.g. example, question, etc...)
+     */
+    private function addTagsToExample($exampleId)
+    {
+    	$params = $this->getRequest()->getParams();
+    	
+	    //get all Concepts/tags for this run_id
 		$q = Doctrine_Query::create()
 			->select('e.id,  e.name')
 			->from('Concept e')
@@ -150,40 +171,33 @@ class ExampleController extends Zend_Controller_Action
 		
 		$theConcepts = $q->fetchArray();
 		
-		// inset eacn of the selected concept into example_concept 
+		// loop the tags and add a relationship if the tag was selected   
 		foreach($theConcepts as $concept)
 		{
 			if(isset($params['concept_id__'.$concept['id']]))
 			{
-				//echo "<hr/>".$cName;
+				//echo "<hr/>".$exampleId."::".$params['concept_id__'.$concept['id']]." ::".$concept['id'];
 				$example_concept = new ExampleConcept();
 		        
 				$example_concept->run_id = $_SESSION['run_id'];
 				$example_concept->author_id = $_SESSION['author_id'];
 				//$example_concept->date_modified = date( 'Y-m-d H:i:s');
 				$example_concept->date_created = date( 'Y-m-d H:i:s');
-				$example_concept->example_id= $example->id;
+				//$example_concept->example_id= $example->id;
+				$example_concept->example_id= $exampleId;
 				$example_concept->concept_id= $concept['id'];
 				$example_concept->save();
-				//echo "<br>Example_concept Id: ".$example_concept->id;
-				
-				// (default behaviour) add a vote +1 for this example_concept (NOT IMPLEMENTED YET)  
+				//echo "<br>Example_concept Id: ".$exampleId;
 
 				// add activity log for each example_concept 
-				if(isset($example->id) && isset($example_concept->id) && isset($example_concept->id))
+				if(isset($exampleId) && isset($example_concept->id))
 				{
 					// add activity log for each concept
-					$this->addActivity(17, $example->id, $concept['id'], $example_concept->id, "Example", "Concept", "ExampleConcept", "Tagged Example with a Concept", null);
+					$this->addActivity(17, $exampleId, $concept['id'], $example_concept->id, "Example", "Concept", "ExampleConcept", "Tagged Example with a Concept", null);
 				} 
 			} // end add example_concept activity log
 		} // end for
-
-		// redirect to home
-		header('Location: /myhome');
-
-    } // end fnc
-    
-    
+    }
     /**
      * 
      * Add an activity log
@@ -225,6 +239,85 @@ class ExampleController extends Zend_Controller_Action
 		//echo "<br>activity Id: ".$activity->id;
 		
 	} 
+	
+    public function updateAction()
+    {
+		//Placeweb_Authorizer::authorize("TEACHER");
+		
+    	$params = $this->getRequest()->getParams();
+    	//print_r($params);
+    	
+		// Update example 
+		Doctrine_Query::create()
+		  ->update('Example e')
+		  ->set('e.name', '?', $params['example-name'])
+		  ->set('e.type', '?', $params['type'])
+		  ->set('e.is_published', '?', $params['is_published'])
+		  ->set('e.content', '?', $params['content'])
+		  ->set('e.media_path', '?', $params['media_path'])
+		  ->set('e.media_content', '?', $params['media_content'])
+		  ->set('e.media_type', '?', $params['media_type'])
+		  ->where('e.run_id = ? AND e.author_id = ? AND e.id = ?' , array($_SESSION['run_id'], $_SESSION['author_id'], $params['example_id']))
+		  ->execute();
+
+		  // get first comment id for this example: !
+			$qLastComment = Doctrine_Query::create()
+			->select('c.*')
+			->from('Comment c')
+			->where('c.run_id = ? AND c.obj_id = ? AND c.obj_type = ?',
+				array($_SESSION['run_id'], $params['example_id'], 3)) 
+				// Find comment on an example; obj_type = 3
+			->orderBy('c.id DESC');
+			$lastComment = $qLastComment->fetchArray();
+			print_r($lastComment);
+		  
+		   // get id from last id
+		  $comment_id = 0;
+		  if(isset($lastComment[0]))
+		  {
+		  	$comment_id = $lastComment[0]['id'];
+		  }
+		
+		// Update first comment 
+		Doctrine_Query::create()
+		  ->update('Comment c')
+		  ->set('c.content', '?', $params['content'])
+		  ->where('c.run_id = ? AND c.author_id = ? AND c.id = ?' ,
+		  		array($_SESSION['run_id'], $_SESSION['author_id'], $comment_id))
+		  ->execute();
+		  
+		  /*
+		  if($params['is_published']==1)
+		  {
+			// insert activity log
+			$activity = new Activity();
+			$activity->run_id = $_SESSION['run_id'];
+			$activity->author_id = $_SESSION['author_id'];
+			//$question_comment->date_modified = date( 'Y-m-d H:i:s');
+			$activity->date_created = date( 'Y-m-d H:i:s');
+			$activity->activity_type_id = 12;
+
+			$activity->i1 = $params['question_id'];
+			$activity->i2 = "";
+			$activity->i3 = "";
+			$activity->i4 = "";
+			$activity->i5 = "";
+			
+			$activity->s1 = "Questions";
+			$activity->s2 = "";
+			$activity->s3 = "";
+			
+			$activity->t1 = "Questions";
+			$activity->t2 = "";
+			
+			$activity->save();
+		  }
+		  */
+			
+		  //header('Location: /question/show?id='.$params['question_id']);
+		  header('Location: /example/show?id='.$params['example_id']);
+		        
+    }
 
 } // end class
 

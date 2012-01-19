@@ -45,8 +45,8 @@ class AssessmentController extends Zend_Controller_Action
         	$s3=$params[$prefix.'s3'];
         	$t1=$params[$prefix.'t1'];
         	
-			$markForDiscussion = isset($params['markForDiscussion']) and $params['markForDiscussion'] == 'true';
-
+        	$markForDiscussion = isset($params['markForDiscussion']) and $params['markForDiscussion'] == 'true';
+        	
         	// create a new Assessment Review
 	        $aReview = new AssessmentReviews();
 			$aReview->run_id = $_SESSION['run_id'];
@@ -71,8 +71,6 @@ class AssessmentController extends Zend_Controller_Action
 				$activity->s1 = 'AssessmentReview';
 				$activity->save();
 			}
-		
-		//echo "<hr>Assessment Review Id: ".$aReview->id;
 		
 			// insert marck for each element
 			$assessList=explode(',', $params['assesment_list']);

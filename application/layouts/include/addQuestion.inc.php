@@ -3,6 +3,13 @@ require(APPLICATION_PATH.'/configs/config.php');
 require(APPLICATION_PATH.'/models/static/'.'PlaceWebTools.php');
 //require(APPLICATION_PATH.'/models/ajaxfileuploader/AjaxFileUploader.inc.php');
 //require(APPLICATION_PATH.'/models/ajaxfileuploader/upload.php');
+// set default values
+$editMode = false;
+$modeTitleLabel = "Add ";
+$modeFormAction = "/example/add";
+$actionButtonLabel = "Add ";
+$checkJsFunction = "checkExample()";
+
 ?>
 <script type="text/javascript" src="/jquery/jqueryfileupload/elo_fileuploader.js" ></script>
 <h2>Add Question</h2>
@@ -10,7 +17,59 @@ require(APPLICATION_PATH.'/models/static/'.'PlaceWebTools.php');
 	<span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
  	<span id="error-dialogue-text"></span>
 </div>
-<div id="home-columns">
+
+<form action="/question/add" method="post" id="addQuestion" name="addQuestion" style="width: 100%">
+		<div id="home-col2" style="float:left; margin-bottom: 30px; width: 75%">            
+				<div style="width: 220px; float: left">
+					<span class="item-label">Name: </span>
+					<span class="item-input"><input type="text" id="question-name" name="name"/></span> 
+				</div>
+				<div style="width: 250px; float: left">
+					<span class="item-label">Type: </span>
+					<span class="item-input">
+					<?php 
+					//echo PlaceWebTools::arrayToHtmlSelect($PLACEWEB_CONFIG['questionTypes'],"", "type");
+					echo PlaceWebTools::arrayToHtmlSelect($this->questionTypes,"", "question_type");
+					?>
+					</span> 
+				</div>
+				<div style="width: 175px; float: left">
+				<span class="item-label">Published: </span>
+				<span class="item-input">
+					<select name="is_published">
+						<option value="1">Yes</option>
+						<option value="0" selected="selected">No</option>
+					</select>
+				</span>
+				</div>
+				<div style="width: 250px; float: left">
+				<span class="item-label">Allow Multiple Answers: </span>
+				<span class="item-input">
+					<select name="allow_multipe_answer">
+						<option value="1">Yes</option>
+						<option value="0" selected="selected">No</option>
+					</select>
+				</span>
+				</div>
+
+			</div>
+			<!-- Multiple Question -->
+			<div id="mc-container" class="hide-container" style="float:left;">
+				<div class="dashlet-title">Multiple Choices</div>
+				<div>
+					<select name="mc-list" id="mc-list">
+						<option value="0">--</option>
+						<option value="1">A : 1</option>
+						<option value="2">B : 2</option>
+						<option value="3">C : 3</option>
+						<option value="4">D : 4</option>
+						<option value="5">E : 5</option>
+					</select>
+				</div>     
+		</div><!-- /home-col2 -->
+
+<div id="home-columns" style="width: 500px; float: left"> 
+    
 	<div id="home-col1" style="float:left;">
 
 	<div id="jp_container_1" class="jp-video jp-video-270p" style="display: none">
@@ -65,7 +124,7 @@ require(APPLICATION_PATH.'/models/static/'.'PlaceWebTools.php');
 		
 			
 		<div class="dashlet-box-image" id="image-preview">
-			<div><img id="eloimg" src="/images/uploader.png" width="320" height="240" alt="Drag and Drop a new Media File here..." title="Drag and Drop a new Media File here..."></div>
+			<div><img id="eloimg" src="/images/uploader.png" width="320" alt="Drag and Drop a new Media File here..." title="Drag and Drop a new Media File here..."></div>
 		</div>
 		<form action="/ajax/uploadfile/" method="POST" enctype="multipart/form-data">
 
@@ -147,59 +206,27 @@ require(APPLICATION_PATH.'/models/static/'.'PlaceWebTools.php');
 		
 	</div><!-- /home-col1 -->
 
-<form action="/question/add" method="post" id="addQuestion" name="addQuestion">
-	<div id="home-col2" style="float:left;">
-		<div class="dashlet-box-simple">
-			<div class="dashlet-title"> Basic Info</div>
-			<div>
-				<span class="item-label">Name: </span>
-				<span class="item-input"><input type="text" id="question-name" name="name"/></span> 
-			</div>
-			<div>
-				<span class="item-label">Type: </span>
-				<span class="item-input">
-				<?php 
-				//echo PlaceWebTools::arrayToHtmlSelect($PLACEWEB_CONFIG['questionTypes'],"", "type");
-				echo PlaceWebTools::arrayToHtmlSelect($this->questionTypes,"", "question_type");
-				?>
-				</span> 
-			</div>
-			<div>
-			<span class="item-label">Published: </span>
-			<span class="item-input">
-				<select name="is_published">
-					<option value="1">Yes</option>
-					<option value="0">No</option>
-				</select>
-			</span>
-			</div>
-		</div>
-		<!-- Multiple Question -->
-		<div id="mc-container" class="hide-container" style="float:left;">
-			<div class="dashlet-title">Multiple Choices</div>
-			<div>
-				<select name="mc-list" id="mc-list">
-					<option value="0">--</option>
-					<option value="1">A : 1</option>
-					<option value="2">B : 2</option>
-					<option value="3">C : 3</option>
-					<option value="4">D : 4</option>
-					<option value="5">E : 5</option>
-				</select>
-			</div>
-		</div>
-	</div><!-- /home-col2 -->
-<!-- 
+
+<?php
+	if (!$editMode)
+	{
+?>
 	<div id="home-col3" style="float:left;">
 		<div class="dashlet-box-simple">
 			<div class="dashlet-title">Tags</div>
 			<div>
- 
+			<?php 
+			echo PlaceWebTools::arrayToHtmlCheckBoxList(loadConcepts(), "concept_id_");
+			?>
+			<div>
+				<input type="checkbox" onclick="toggleChecked(this.checked)"> Select / Deselect All
+			</div>
 			</div>
 		</div>
-	</div>
-	-->
-	<!-- /home-col3 -->
+	</div><!-- /home-col3 -->
+<?php
+	} // end if not edit mode
+?>	
 	
 	<div class="clear"></div>
 	
@@ -208,13 +235,13 @@ require(APPLICATION_PATH.'/models/static/'.'PlaceWebTools.php');
 		<div class="dashlet-box" style="float:left;">
 			<div class="dashlet-title">Content</div>
 			<div>
-				<textarea rows="10" cols="10" name="content" id="content"></textarea>
-				<div style="text-align:center; margin-top:25px;">
-					<input type="button" onClick="checkQuestion()" value="Add Question"/>
-					<input type="reset" value="Cancel"/>
-				</div>   
+				<textarea rows="10" cols="10" name="content" id="content"></textarea>   
 			</div>
 		</div>
+	</div>
+	<div style="width: 100%; float:left;">
+		<input type="button" onClick="checkQuestion()" value="Add Question"/>
+		<input type="reset" value="Cancel"/>
 	</div>
 	<!-- /second line container -->
 	
@@ -242,3 +269,23 @@ $('#question_type').change(function() {
 
 });
 </script>
+<?php 
+function loadConcepts()
+{
+	//get all Concepts in db for comparison: which ones are not added yet
+	$q = Doctrine_Query::create()
+		->select('e.id,  e.name')
+		->from('Concept e')
+		->where('e.run_id = ?', $_SESSION['run_id']);
+	
+	$theConcepts = $q->fetchArray();
+	
+	// adjust the concepts from db 
+	foreach($theConcepts as $concept)
+	{
+		$theConceptsF[$concept['id']] = $concept['name'];
+	}
+	
+	return $theConceptsF;
+}
+?>

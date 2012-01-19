@@ -19,6 +19,7 @@ Doctrine_Manager::getInstance()->bindComponent('AssessmentReviews', 'main');
  * @property string $t1
  * @property string $t2
  * @property integer $mark_for_discussion
+ * @property Assessment $Assessment
  * @property Run $Run
  * @property User $User
  * 
@@ -142,6 +143,10 @@ abstract class BaseAssessmentReviews extends Doctrine_Record
     public function setUp()
     {
         parent::setUp();
+        $this->hasOne('Assessment', array(
+             'local' => 'assessment_id',
+             'foreign' => 'id'));
+
         $this->hasOne('Run', array(
              'local' => 'run_id',
              'foreign' => 'id'));
