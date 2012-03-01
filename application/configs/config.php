@@ -31,9 +31,9 @@ $PLACEWEB_CONFIG['ffmpegPath'] = '/usr/local/bin/ffmpeg';
 //$PLACEWEB_CONFIG['uploadDir'] = "/var/www/mywebapps/PlaceWeb.GitHub/place.web.agamba/public/content/";
 
 // server config
-$PLACEWEB_CONFIG['uploadDir'] = "/var/www/place/public/content/";
+$PLACEWEB_CONFIG['uploadDir'] = "/Users/cfislotta/Projects/OISE/PLACEWeb/APP/uploads";
 
-$PLACEWEB_CONFIG['uploadWebDir'] = "/content/";
+$PLACEWEB_CONFIG['uploadWebDir'] = "/Users/cfislotta/Projects/OISE/PLACEWeb/APP/uploads";
 
 //////////////////////////////////////////////////////////////////
 
@@ -78,4 +78,21 @@ $PLACEWEB_CONFIG['nodeTypes'] = array(
 	"3" => "Investigation", 
 	"4" => "Challenge Problem"
 );
+
+// Default Answer template
+$PLACEWEB_CONFIG['answerTemplate'] = "
+	<p><b>1. Provide a brief rationale for why you chose the answer you did.</b></p>
+	<p></p>
+	<p><b>2. How did examples provided with the question to help you understand and respond to the
+	problem?</b></p>
+	<p></p>
+	<p><b>3. How was each example connected or related to the challenge problem?</b></p>
+	<p></p>
+	<p><b>Example 1 was related as follows:</b></p>
+	<p></p>
+	<p><b>Example 2 was related as follows:</b></p>
+	<p></p>
+	<p><b>Example 3 was related as follows:</b></p>
+	<p></p>
+	<p><b>Example 4 was related as follows:</b></p>";
 ?>

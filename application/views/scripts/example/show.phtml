@@ -21,12 +21,6 @@ $( "#error-dialog" ).dialog({
 global $notAssessedItems;
 $notAssessedItems="";
 
-///echo "<hr/>";
-//echo "<hr/>Type: ".$this->type;
-
-//echo "<hr/>";
-//print_r($this->example);
-
 // do not attempt to show the example if the example was not found, return an error message
 if($this->type==-1)
 {
@@ -190,7 +184,7 @@ if($this->type==0 && !$error)
 		} else { 
 			
 echo '
-<div class="dashlet-box-image">
+<div class="dashlet-box-image dashlet-box-image-details">
     <div class="dashlet-title">'.$this->example[0]['name'].'</div>
 	<div class="image-holder"><img src="'.$this->example[0]['media_content'].'" title="'.$this->example[0]['name'].'" width="320px" /></div>
 </div>';

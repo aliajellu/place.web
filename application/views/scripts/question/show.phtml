@@ -461,7 +461,6 @@ if($notAssessedItems!="")
 		<form method="post" id="saveAnswerForm" action="/question/addanswer?prefix=answ_">
 		<?php 
 			// add here the posible answers when the elo is a multiple choice
-			///*
 			if($this->question[0]['type'] == "MC" )
 			{
 				$anwersFormHtml = '
@@ -478,14 +477,15 @@ if($notAssessedItems!="")
 				';
 				echo $anwersFormHtml;
 			}
-			//*/
 			?>
 		<div  class="dashlet-box html-editor" style="float:left;">
 			<div class="dashlet-title"><?php echo $answerTitle ?></div>
 	
 
 			<input type="hidden" id="question_id"  name="question_id" value="<?php echo $this->question[0]['id']?>"/>
-			<textarea name="content"></textarea>
+			<textarea name="content">
+				<?= $this->PLACEWEB_CONFIG['answerTemplate'] ?>
+			</textarea>
 			<br/><input type="button" onClick="saveAnswer()" value="Save Answer">
 			</div>
 		</form>

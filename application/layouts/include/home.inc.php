@@ -91,7 +91,7 @@ if($_SESSION['profile']=="STUDENT")
 	</div><!-- /home-col1 -->
 <?php 
 } // end if student
-?>     
+?>
 
 <!-- Rokham's changes-->      
 <?php 
@@ -102,28 +102,29 @@ if($_SESSION['profile']=="TEACHER")
 	
 	<!-- If the Teacher logs in the options are more compared to the student --> 
 	                 
-	<div style="width: 100px; float: left"> 
-		<div style="margin-bottom: 10px; color: white"> Examples </div>
-		<a href="/example/addform"> <img title="Add Example" height="40px" src="/images/add_icon.png"/> </a>
-		<a href="/example/show"> <img title="List Examples" height="40px" src="/images/list_icon.png"/> </a> 
+	<div class='course-action-container'> 
+		<div class='course-action-title'> Examples </div>
+		<div class='buttonset'>
+			<button class='course-action-link' href="/example/addform" > <img title="Add Example" src="/images/add_icon.png"/> </button>
+			<button class='course-action-link' href="/example/show"> <img title="List Examples" src="/images/list-icon.png"/> </button> 
+		</div>
 	</div> 
 	
-	<div style="width: 100px; float: left; margin-left: 25px"> 
-		<div style="margin-bottom: 10px; color: white"> Questions </div>
-		<a href="/question/addform"> <img title="Add Question" height="40px" src="/images/add_icon.png"/> </a>
-		<a href="/question/show"> <img title="List Questions" height="40px" src="/images/list_icon.png"/> </a> 
+	<div class='course-action-container'> 
+		<div class='course-action-title'> Questions </div>
+		<div class='buttonset'>
+			<button class='course-action-link' href="/question/addform"> <img title="Add Question" src="/images/add_icon.png"/> </button>
+			<button class='course-action-link' href="/question/show"> <img title="List Questions" src="/images/list-icon.png"/> </button> 
+		</div>
 	</div>
 	
-	<div style="width: 100px; float: left; margin-left: 25px"> 
-		<div style="margin-bottom: 10px; color: white"> Manage </div>
-		<a href="/myhome/classlist"> <img title="Manage Class" height="40px" src="/images/setting_icon.png"/> </a>
-		<a href="/myhome/curriculum-journal"> <img title="Curriculum Journal" height="40px" src="/images/curriculum_journal2_icon.png"/> </a>
+	<div class='course-action-container' style='float: right;'> 
+		<div class='course-action-title'> Manage Class </div>
+		<div class='buttonset'>
+			<button class='course-action-link' href="/myhome/classlist"> <img title="Manage Class" height="40px" src="/images/setting_icon.png"/> </button>
+			<button class='course-action-link' href="/myhome/curriculum-journal"> <img title="Curriculum Journal" height="40px" src="/images/curriculum_journal2_icon.png"/> </button>
+		</div>
 	</div> 
-	
-	<div style="width: 45px; float: left; margin-left: 25px"> 
-		<div style="margin-bottom: 10px; color: white"> Web </div>    
-		<a href="#" onClick="loadWeb()"><img title="Launch Associative Web" height="40px" src="/images/web_icon.png"/></a>
-	</div>  
 
 </div>	
 <?php } // end if teacher?>  

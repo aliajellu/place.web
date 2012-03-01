@@ -95,7 +95,7 @@ class ExampleController extends Zend_Controller_Action
     	
     	// ??? check this
     	$this->view->fConcepts = $PLACEWEB_CONFIG['fConcepts'];
-		$this->view->uploader = $PLACEWEB_CONFIG['fileuploader'];
+		// $this->view->uploader = $PLACEWEB_CONFIG['fileuploader'];
     }
     
     public function addAction(){

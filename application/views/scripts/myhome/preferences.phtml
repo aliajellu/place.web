@@ -33,10 +33,11 @@ if($this->showPreferencesForm)
 		</tr>
 		<tr>
 			<td>&nbsp;</td>
-			<td>
+			<td style='text-align:right;'>
 				<input type="hidden" id="validate" name="validate" value="0">
-				<input type="button" onClick="validateNewPassword()" value="Submit">
-				<input type="button" onClick="cancelPreferences()" value="Cancel">
+				
+				<a href='/' class='cancel-link'>cancel</a>
+				<button onClick="validateNewPassword()">Submit</button>
 			</td>
 		</tr>
 	</table>

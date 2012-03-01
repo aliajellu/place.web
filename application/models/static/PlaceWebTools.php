@@ -45,16 +45,16 @@ class PlaceWebTools
 	 * @param array $dataAr
 	 * @param String $namePrefix
 	 */
-	public static function arrayToHtmlCheckBoxList($dataAr, $namePrefix)
+	public static function arrayToHtmlCheckBoxList($dataAr, $namePrefix, $ulClass='')
 	{
 		$html = '
-		<ul class="ul-for-data">';
+		<ul class="ul-for-data '.$ulClass.'">';
 
 		foreach($dataAr as $val => $name)
 		{
 	
 			$html .= '
-				<li><input class="tag-checkbox" type="checkbox" name="'.$namePrefix.'_'.$val.'" value="'.$name.'"/>'.$name.'</li>';
+				<li><input type="checkbox" name="'.$namePrefix.'_'.$val.'" value="'.$name.'"/>'.$name.'</li>';
 		}
 	
 		$html.='
