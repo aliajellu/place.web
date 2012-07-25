@@ -23,3 +23,5 @@ $PLACEWEB_CONFIG['uploadDir'] = "/var/www/place/public/content/";
 
 Note all views are located in
 /application/views/scripts
+
+just a test
